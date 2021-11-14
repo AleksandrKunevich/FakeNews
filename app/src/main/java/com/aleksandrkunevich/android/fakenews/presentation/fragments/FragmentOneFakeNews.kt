@@ -1,4 +1,4 @@
-package com.aleksandrkunevich.android.fakenews.presentation.recycler.fragments
+package com.aleksandrkunevich.android.fakenews.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleksandrkunevich.android.fakenews.R
 import com.aleksandrkunevich.android.fakenews.presentation.DataModel
@@ -25,7 +25,7 @@ class FragmentOneFakeNews : Fragment() {
     }
 
     private val fakeNews by lazy { FakeNewsAdapter() }
-    private val dataModel: DataModel by viewModels()
+    private val dataModel: DataModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,24 +36,14 @@ class FragmentOneFakeNews : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initRecycler()
         val button: Button = view.findViewById(R.id.buttonSorting)
         button.setOnClickListener {
             openChooseSortingFragment()
-
-            initRecycler()
-
-            dataModel.sortingAlgorithm.observe(viewLifecycleOwner) { idSortingAlgorithm ->
+            dataModel.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSortingAlgorithm ->
                 Toast.makeText(context, "$idSortingAlgorithm", Toast.LENGTH_SHORT).show()
                 Log.d("AAAA", "get $idSortingAlgorithm")
             }
-        }
-    }
-
-    private fun initRecycler() {
-        recyclerViewFakeNews.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = fakeNews
         }
     }
 
@@ -65,5 +55,12 @@ class FragmentOneFakeNews : Fragment() {
             FragmentTwoChooseSorting.TAG
         )
         trans.commit()
+    }
+
+    private fun initRecycler() {
+        recyclerViewFakeNews.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = fakeNews
+        }
     }
 }
