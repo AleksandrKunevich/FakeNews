@@ -47,5 +47,6 @@ class FragmentTwoChooseSorting : Fragment() {
     private fun getIdChooseSortingAlgorithm(id: Int) {
         dataModel.sortingAlgorithm.value = id
         Log.d("AAAA", "put $id")
+        Log.d("AAAA", "putVaue ${dataModel.sortingAlgorithm.value}")
     }
 }

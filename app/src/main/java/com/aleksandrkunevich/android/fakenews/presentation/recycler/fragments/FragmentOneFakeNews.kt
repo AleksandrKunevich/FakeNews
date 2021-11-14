@@ -36,15 +36,18 @@ class FragmentOneFakeNews : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+
         val button: Button = view.findViewById(R.id.buttonSorting)
         button.setOnClickListener {
             openChooseSortingFragment()
+
+            initRecycler()
+
+            dataModel.sortingAlgorithm.observe(viewLifecycleOwner) { idSortingAlgorithm ->
+                Toast.makeText(context, "$idSortingAlgorithm", Toast.LENGTH_SHORT).show()
+                Log.d("AAAA", "get $idSortingAlgorithm")
+            }
         }
-        dataModel.sortingAlgorithm.observe(viewLifecycleOwner,{ idSortingAlgorithm ->
-            Toast.makeText(context, "$idSortingAlgorithm", Toast.LENGTH_SHORT).show()
-            Log.d("AAAA", "get $idSortingAlgorithm")
-        })
     }
 
     private fun initRecycler() {
