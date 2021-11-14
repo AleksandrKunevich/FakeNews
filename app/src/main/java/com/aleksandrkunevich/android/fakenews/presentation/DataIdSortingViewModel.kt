@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DataModel : ViewModel() {
+class DataIdSortingViewModel : ViewModel() {
 
     private val selected = MutableLiveData<Int>()
 

@@ -1,7 +1,6 @@
 package com.aleksandrkunevich.android.fakenews.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,8 @@ import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.aleksandrkunevich.android.fakenews.R
-import com.aleksandrkunevich.android.fakenews.presentation.DataModel
+import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 
 class FragmentTwoChooseSorting : Fragment() {
 
@@ -21,7 +19,7 @@ class FragmentTwoChooseSorting : Fragment() {
         fun newInstance() = FragmentTwoChooseSorting()
     }
 
-    private val dataModel: DataModel by activityViewModels()
+    private val dataModel: DataIdSortingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +45,5 @@ class FragmentTwoChooseSorting : Fragment() {
 
     private fun getIdChooseSortingAlgorithm(id: Int) {
         dataModel.setIdSortingAlgorithm(id)
-        Log.d("AAAA", "put $id")
     }
 }

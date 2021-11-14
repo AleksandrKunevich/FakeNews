@@ -1,18 +1,16 @@
 package com.aleksandrkunevich.android.fakenews.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleksandrkunevich.android.fakenews.R
-import com.aleksandrkunevich.android.fakenews.presentation.DataModel
+import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNewsAdapter
 import kotlinx.android.synthetic.main.fragment_one_news.*
 
@@ -25,7 +23,7 @@ class FragmentOneFakeNews : Fragment() {
     }
 
     private val fakeNews by lazy { FakeNewsAdapter() }
-    private val dataModel: DataModel by activityViewModels()
+    private val dataModel: DataIdSortingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,10 +38,9 @@ class FragmentOneFakeNews : Fragment() {
         val button: Button = view.findViewById(R.id.buttonSorting)
         button.setOnClickListener {
             openChooseSortingFragment()
-            dataModel.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSortingAlgorithm ->
-                Toast.makeText(context, "$idSortingAlgorithm", Toast.LENGTH_SHORT).show()
-                Log.d("AAAA", "get $idSortingAlgorithm")
-            }
+        }
+        dataModel.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSortingAlgorithm ->
+            fakeNews.reloadSortedRecycler(idSortingAlgorithm)
         }
     }
 
