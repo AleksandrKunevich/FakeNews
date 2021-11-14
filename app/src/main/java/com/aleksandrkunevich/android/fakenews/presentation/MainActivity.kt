@@ -11,8 +11,6 @@ import com.aleksandrkunevich.android.fakenews.presentation.recycler.fragments.Fr
 
 class MainActivity : AppCompatActivity() {
 
-//    private val buttonSorting: Button by lazy { findViewById(R.id.buttonSorting) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,13 +19,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         initFakeNews()
-
-//        buttonSorting.setOnClickListener {
-//            openChooseSortingFragment(
-//                FragmentTwoChooseSorting.newInstance(),
-//                FragmentTwoChooseSorting.TAG
-//            )
-//        }
     }
 
     private fun initFakeNews() {
@@ -41,6 +32,4 @@ class MainActivity : AppCompatActivity() {
             )
             .commit()
     }
-
-
 }
