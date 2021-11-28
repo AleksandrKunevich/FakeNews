@@ -3,17 +3,21 @@ package com.aleksandrkunevich.android.fakenews.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-class DataIdSortingViewModel : ViewModel() {
+class DataIdSortingViewModel() : ViewModel() {
 
-    private val selected = MutableLiveData<Int>()
+    private val _selected = MutableLiveData<Int>()
+    val selected: LiveData<Int> get() = _selected
 
     fun setIdSortingAlgorithm(item: Int) {
-        selected.value = item
+        viewModelScope.launch {
+            _selected.value = item
+        }
     }
 
     fun getIdSortingAlgorithm(): LiveData<Int> {
         return selected
     }
-
 }

@@ -10,9 +10,12 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleksandrkunevich.android.fakenews.R
+import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
+import com.aleksandrkunevich.android.fakenews.presentation.FakeNewsViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNewsAdapter
 import kotlinx.android.synthetic.main.fragment_one_news.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FragmentOneFakeNews : Fragment() {
 
@@ -22,8 +25,9 @@ class FragmentOneFakeNews : Fragment() {
         fun newInstance() = FragmentOneFakeNews()
     }
 
-    private val fakeNews by lazy { FakeNewsAdapter() }
-    private val dataModel: DataIdSortingViewModel by activityViewModels()
+    private val adapter by lazy { FakeNewsAdapter() }
+    private val dataModelIdSorting: DataIdSortingViewModel by activityViewModels()
+    private val fakeNewsViewModel by viewModel<FakeNewsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,17 +35,20 @@ class FragmentOneFakeNews : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_one_news, container, false)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+
+        recyclerViewFakeNews.adapter = adapter
+
+        getOrInsertAndGetFakeNewsFromDataBase()
         val button: Button = view.findViewById(R.id.buttonSorting)
         button.setOnClickListener {
             openChooseSortingFragment()
         }
-        dataModel.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSortingAlgorithm ->
-            fakeNews.reloadSortedRecycler(idSortingAlgorithm)
-        }
+        dataModelIdSorting.getIdSortingAlgorithm()
+            .observe(viewLifecycleOwner) { idSortingAlgorithm ->
+                adapter.reloadSortedRecycler(idSortingAlgorithm)
+            }
     }
 
     private fun openChooseSortingFragment() {
@@ -54,10 +61,28 @@ class FragmentOneFakeNews : Fragment() {
         trans.commit()
     }
 
-    private fun initRecycler() {
-        recyclerViewFakeNews.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = fakeNews
+//    private fun initRecycler(newfakeNews: List<FakeNews>) {
+//        recyclerViewFakeNews.apply {
+//            layoutManager = LinearLayoutManager(activity)
+//            adapter.submitList(newfakeNews)
+//        }
+//    }
+
+    private fun getOrInsertAndGetFakeNewsFromDataBase() {
+        fakeNewsViewModel.loadNews()
+        fakeNewsViewModel.fakeNews.observe(this) { newFakeNews ->
+            if (newFakeNews.isEmpty()) {
+                fakeNewsViewModel.insertFakeNews()
+                fakeNewsViewModel.loadNews()
+                adapter.submitList(newFakeNews)
+//                recyclerViewFakeNews.apply {
+//                    layoutManager = LinearLayoutManager(activity)
+//
+//                }
+            } else {
+                adapter.submitList(newFakeNews)
+            }
         }
     }
 }
+

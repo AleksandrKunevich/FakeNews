@@ -1,4 +1,4 @@
-package com.aleksandrkunevich.android.fakenews.presentation.recycler
+package com.aleksandrkunevich.android.fakenews.domain
 
 data class FakeNews(
     val title: String,

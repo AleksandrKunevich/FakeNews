@@ -1,9 +1,10 @@
 package com.aleksandrkunevich.android.fakenews.domain
 
-import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNews
-
 interface FakeNewsInteractor {
 
-    fun loadNews() : List<FakeNews>
+    suspend fun getFakeNews() : List<FakeNews>
 
+    suspend fun insertFakeNews(vararg fakeNews: FakeNews)
+
+    suspend fun deleteFakeNews(vararg fakeNews: FakeNews)
 }

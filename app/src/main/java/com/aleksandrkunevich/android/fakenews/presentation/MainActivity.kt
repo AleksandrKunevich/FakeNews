@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.aleksandrkunevich.android.fakenews.R
 import com.aleksandrkunevich.android.fakenews.presentation.fragments.FragmentOneFakeNews
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .addToBackStack(FragmentOneFakeNews.TAG)
-            .add(
+            .replace(
                 R.id.frameLayout,
                 FragmentOneFakeNews.newInstance(),
                 FragmentOneFakeNews.TAG

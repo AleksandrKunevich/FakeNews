@@ -5,13 +5,13 @@ import android.os.Build
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aleksandrkunevich.android.fakenews.R
-import com.aleksandrkunevich.android.fakenews.data.FakeNewsDataSource
+import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class FakeNewsAdapter : RecyclerView.Adapter<FakeNewsHolder>() {
 
-    private val itemsFakeNews: List<FakeNews> = FakeNewsDataSource().loadNews()
+    private var itemsFakeNews: List<FakeNews> = mutableListOf()
     private val setSortedItems = itemsFakeNews as MutableList<FakeNews>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FakeNewsHolder {
@@ -24,6 +24,11 @@ class FakeNewsAdapter : RecyclerView.Adapter<FakeNewsHolder>() {
 
     override fun getItemCount(): Int {
         return itemsFakeNews.size
+    }
+
+    fun submitList(data: List<FakeNews>) {
+        itemsFakeNews = data
+        notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")

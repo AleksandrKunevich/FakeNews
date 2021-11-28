@@ -1,11 +1,11 @@
 package com.aleksandrkunevich.android.fakenews.data
 
 import com.aleksandrkunevich.android.fakenews.domain.FakeNewsInteractor
-import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNews
+import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 
 class FakeNewsDataSource : FakeNewsInteractor {
 
-    override fun loadNews(): List<FakeNews> {
+    fun loadNews(): List<FakeNews> {
         return listFakeNews
     }
 
@@ -124,4 +124,14 @@ class FakeNewsDataSource : FakeNewsInteractor {
             "Существуют две стратегии. Первая — купить автолюльку, затем первое автокресло, потом кресло побольше. Вторая — сразу подобрать универсальную модель, так, чтобы от нуля и до подростковых истерик. Поспрашивали продавцов о том, какой путь лучше, и не услышали единого мнения. Одни настаивают, что каждому возрасту нужны свои адаптированные вещи, другие делают предположение, что такой подход выгоден в первую очередь производителям, но может быть тяжеловат для семейного бюджета."
         )
     )
+
+    override suspend fun getFakeNews(): List<FakeNews> {
+        return loadNews()
+    }
+
+    override suspend fun insertFakeNews(vararg fakeNews: FakeNews) {
+    }
+
+    override suspend fun deleteFakeNews(vararg fakeNews: FakeNews) {
+    }
 }
