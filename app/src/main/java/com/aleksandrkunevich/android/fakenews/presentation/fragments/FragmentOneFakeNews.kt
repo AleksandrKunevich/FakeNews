@@ -1,5 +1,6 @@
 package com.aleksandrkunevich.android.fakenews.presentation.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ class FragmentOneFakeNews : Fragment() {
     private val adapterFakeNews by lazy { FakeNewsAdapter() }
     private val dataModelIdSorting: DataIdSortingViewModel by activityViewModels()
     private val fakeNewsViewModel by viewModel<FakeNewsViewModel>()
+    private var items: List<FakeNews> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +49,7 @@ class FragmentOneFakeNews : Fragment() {
         }
         dataModelIdSorting.getIdSortingAlgorithm()
             .observe(viewLifecycleOwner) { idSortingAlgorithm ->
-                adapterFakeNews.reloadSortedRecycler(idSortingAlgorithm)
+                reloadSortedRecycler(idSortingAlgorithm)
             }
     }
 
@@ -61,24 +63,43 @@ class FragmentOneFakeNews : Fragment() {
         trans.commit()
     }
 
-//    private fun initRecycler(newfakeNews: List<FakeNews>) {
-//        recyclerViewFakeNews.apply {
-//            layoutManager = LinearLayoutManager(activity)
-//            adapter = adapterFakeNews
-//        }
-//    }
-
     private fun getOrInsertAndGetFakeNewsFromDataBase() {
         fakeNewsViewModel.loadFakeNews()
         fakeNewsViewModel.fakeNews.observe(this) { newFakeNews ->
+            recyclerViewFakeNews.layoutManager = LinearLayoutManager(activity)
             if (newFakeNews.isEmpty()) {
                 fakeNewsViewModel.insertFakeNews()
                 fakeNewsViewModel.loadFakeNews()
+                items = newFakeNews
                 adapterFakeNews.submitList(newFakeNews)
             } else {
+                items = newFakeNews
                 adapterFakeNews.submitList(newFakeNews)
             }
         }
     }
-}
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun reloadSortedRecycler(sortedId: Int) {
+        recyclerViewFakeNews.layoutManager = LinearLayoutManager(activity)
+        when (sortedId) {
+            R.id.radioButtonAuthor -> {
+                adapterFakeNews.submitList(items.sortedBy {
+                    it.author
+                })
+            }
+
+            R.id.radioButtonDate -> {
+                adapterFakeNews.submitList(items.sortedBy {
+                    it.date
+                })
+            }
+
+            R.id.radioButtonTitle -> {
+                adapterFakeNews.submitList(items.sortedBy {
+                    it.title
+                })
+            }
+        }
+    }
+}

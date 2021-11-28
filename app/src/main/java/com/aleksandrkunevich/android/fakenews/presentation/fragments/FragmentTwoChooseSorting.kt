@@ -36,7 +36,6 @@ class FragmentTwoChooseSorting : Fragment() {
         }
     }
 
-
     private fun closeChooseFragment() {
         val trans: FragmentTransaction = parentFragmentManager.beginTransaction()
         trans.remove(this)
