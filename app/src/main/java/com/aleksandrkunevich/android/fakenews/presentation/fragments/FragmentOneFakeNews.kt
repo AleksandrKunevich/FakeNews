@@ -8,9 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleksandrkunevich.android.fakenews.R
-import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.FakeNewsViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNewsAdapter
@@ -69,16 +67,12 @@ class FragmentOneFakeNews : Fragment() {
 //    }
 
     private fun getOrInsertAndGetFakeNewsFromDataBase() {
-        fakeNewsViewModel.loadNews()
-        fakeNewsViewModel.fakeNews.observe(this) { newFakeNews ->
+        fakeNewsViewModel.loadFakeNews()
+        fakeNewsViewModel.fakeNews.observe(viewLifecycleOwner) { newFakeNews ->
             if (newFakeNews.isEmpty()) {
                 fakeNewsViewModel.insertFakeNews()
-                fakeNewsViewModel.loadNews()
+                fakeNewsViewModel.loadFakeNews()
                 adapter.submitList(newFakeNews)
-//                recyclerViewFakeNews.apply {
-//                    layoutManager = LinearLayoutManager(activity)
-//
-//                }
             } else {
                 adapter.submitList(newFakeNews)
             }

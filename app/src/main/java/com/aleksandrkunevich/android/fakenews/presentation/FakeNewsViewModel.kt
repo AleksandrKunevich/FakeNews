@@ -13,7 +13,7 @@ class FakeNewsViewModel(private val fakeNewsInteractor: FakeNewsInteractor) : Vi
     val fakeNews: LiveData<List<FakeNews>> get() = _fakeNews
     private val _fakeNews = MutableLiveData<List<FakeNews>>()
 
-    fun loadNews() {
+    fun loadFakeNews() {
         viewModelScope.launch {
             _fakeNews.value = fakeNewsInteractor.getFakeNews()
         }

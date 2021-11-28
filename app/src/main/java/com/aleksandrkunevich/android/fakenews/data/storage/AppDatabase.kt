@@ -7,13 +7,13 @@ import androidx.room.RoomDatabase
     entities = [
         FakeNewsEntity::class
     ],
-    version = AppData.VERSION
+    version = AppDatabase.VERSION
 )
 
-abstract class AppData : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     companion object {
         const val VERSION = 1
     }
 
-    abstract fun getFakeNews() : FakeNewsDao
+    abstract fun getFakeNewsDao(): FakeNewsDao
 }

@@ -7,12 +7,13 @@ import androidx.room.Query
 
 @Dao
 interface FakeNewsDao {
-    @Query("SELECT * FROM fakenews")
-    fun getAllFakeNews(): List<FakeNewsEntity>
+
+    @Query("SELECT * FROM fakeNews")
+    fun getAll(): List<FakeNewsEntity>
 
     @Insert
-    fun insetFakeNews(fakenews: FakeNewsEntity)
+    fun insetFakeNews(fakeNews: FakeNewsEntity)
 
     @Delete
-    fun deleteFakeNews(fakenews: FakeNewsEntity)
+    fun deleteFakeNews(fakeNews: FakeNewsEntity)
 }

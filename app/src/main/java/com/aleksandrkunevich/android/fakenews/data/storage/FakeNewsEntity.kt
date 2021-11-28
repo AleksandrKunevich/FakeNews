@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "fakenews")
+@Entity(tableName = "fakeNews")
 data class FakeNewsEntity(
 
     @ColumnInfo(name = "title")

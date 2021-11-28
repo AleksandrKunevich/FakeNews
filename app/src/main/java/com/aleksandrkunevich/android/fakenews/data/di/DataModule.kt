@@ -1,19 +1,19 @@
 package com.aleksandrkunevich.android.fakenews.data.di
 
 import androidx.room.Room
-import com.aleksandrkunevich.android.fakenews.data.storage.AppData
+import com.aleksandrkunevich.android.fakenews.data.storage.AppDatabase
 import org.koin.dsl.module
 
-val dataModule = module {
-    single {
+val databaseModule = module {
+    single<AppDatabase> {
         Room.databaseBuilder(
             get(),
-            AppData::class.java,
-            "fakenews"
+            AppDatabase::class.java,
+            "fakeNews"
         ).build()
     }
 
     single {
-        get<AppData>().getFakeNews()
+        get<AppDatabase>().getFakeNewsDao()
     }
 }

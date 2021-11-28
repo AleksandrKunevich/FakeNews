@@ -1,4 +1,4 @@
-package com.aleksandrkunevich.android.fakenews.data.di
+package com.aleksandrkunevich.android.fakenews.data
 
 import com.aleksandrkunevich.android.fakenews.data.storage.FakeNewsEntity
 import com.aleksandrkunevich.android.fakenews.domain.FakeNews
