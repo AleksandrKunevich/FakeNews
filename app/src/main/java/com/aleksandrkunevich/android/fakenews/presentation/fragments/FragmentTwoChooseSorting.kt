@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.aleksandrkunevich.android.fakenews.R
+import com.aleksandrkunevich.android.fakenews.databinding.FragmentTwoRadioBinding
 import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 
 class FragmentTwoChooseSorting : Fragment() {
+
+    private val dataModel: DataIdSortingViewModel by activityViewModels()
+    private lateinit var binding: FragmentTwoRadioBinding
 
     companion object {
         const val TAG = "One"
@@ -19,18 +21,19 @@ class FragmentTwoChooseSorting : Fragment() {
         fun newInstance() = FragmentTwoChooseSorting()
     }
 
-    private val dataModel: DataIdSortingViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_two_radio, container, false)
+    ): View {
+        binding = FragmentTwoRadioBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val radio: RadioGroup = view.findViewById(R.id.radioGroup)
-        radio.setOnCheckedChangeListener { group, checkedId ->
+
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             getIdChooseSortingAlgorithm(checkedId)
             closeChooseFragment()
         }

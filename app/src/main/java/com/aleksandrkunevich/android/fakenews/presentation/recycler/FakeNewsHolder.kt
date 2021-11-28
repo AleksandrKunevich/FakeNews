@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aleksandrkunevich.android.fakenews.R
+import com.aleksandrkunevich.android.fakenews.databinding.RecyclerviewItemLayoutBinding
 import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import kotlinx.android.synthetic.main.recyclerview_item_layout.view.*
 

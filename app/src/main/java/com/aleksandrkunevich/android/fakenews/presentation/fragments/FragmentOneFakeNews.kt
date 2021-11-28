@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aleksandrkunevich.android.fakenews.R
+import com.aleksandrkunevich.android.fakenews.databinding.ActivityMainBinding
+import com.aleksandrkunevich.android.fakenews.databinding.FragmentOneNewsBinding
+import com.aleksandrkunevich.android.fakenews.databinding.FragmentTwoRadioBinding
 import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.FakeNewsViewModel
@@ -26,8 +27,11 @@ class FragmentOneFakeNews : Fragment() {
         fun newInstance() = FragmentOneFakeNews()
     }
 
-    private val adapterFakeNews by lazy { FakeNewsAdapter() }
     private val dataModelIdSorting: DataIdSortingViewModel by activityViewModels()
+    private lateinit var binding: FragmentOneNewsBinding
+    private lateinit var binding2: FragmentTwoRadioBinding
+    private lateinit var bindingActivity: ActivityMainBinding
+    private val adapterFakeNews by lazy { FakeNewsAdapter() }
     private val fakeNewsViewModel by viewModel<FakeNewsViewModel>()
     private var items: List<FakeNews> = mutableListOf()
 
@@ -35,28 +39,31 @@ class FragmentOneFakeNews : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_one_news, container, false)
+    ): View {
+        binding = FragmentOneNewsBinding.inflate(inflater, container, false)
+        binding2 = FragmentTwoRadioBinding.inflate(inflater, container, false)
+        bindingActivity = ActivityMainBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         recyclerViewFakeNews.adapter = adapterFakeNews
-
         getOrInsertAndGetFakeNewsFromDataBase()
-        val button: Button = view.findViewById(R.id.buttonSorting)
-        button.setOnClickListener {
+
+        binding.buttonSorting.setOnClickListener {
             openChooseSortingFragment()
         }
-        dataModelIdSorting.getIdSortingAlgorithm()
-            .observe(viewLifecycleOwner) { idSortingAlgorithm ->
-                reloadSortedRecycler(idSortingAlgorithm)
-            }
+
+        dataModelIdSorting.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSorting ->
+            reloadSortedRecycler(idSorting)
+        }
     }
 
     private fun openChooseSortingFragment() {
         val trans: FragmentTransaction = parentFragmentManager.beginTransaction()
         trans.add(
-            R.id.frameLayout,
+            bindingActivity.frameLayout.id,
             FragmentTwoChooseSorting.newInstance(),
             FragmentTwoChooseSorting.TAG
         )
@@ -82,23 +89,25 @@ class FragmentOneFakeNews : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     fun reloadSortedRecycler(sortedId: Int) {
         recyclerViewFakeNews.layoutManager = LinearLayoutManager(activity)
-        when (sortedId) {
-            R.id.radioButtonAuthor -> {
-                adapterFakeNews.submitList(items.sortedBy {
-                    it.author
-                })
-            }
+        binding2.apply {
+            when (sortedId) {
+                radioButtonAuthor.id -> {
+                    adapterFakeNews.submitList(items.sortedBy {
+                        it.author
+                    })
+                }
 
-            R.id.radioButtonDate -> {
-                adapterFakeNews.submitList(items.sortedBy {
-                    it.date
-                })
-            }
+                radioButtonDate.id -> {
+                    adapterFakeNews.submitList(items.sortedBy {
+                        it.date
+                    })
+                }
 
-            R.id.radioButtonTitle -> {
-                adapterFakeNews.submitList(items.sortedBy {
-                    it.title
-                })
+                radioButtonTitle.id -> {
+                    adapterFakeNews.submitList(items.sortedBy {
+                        it.title
+                    })
+                }
             }
         }
     }
