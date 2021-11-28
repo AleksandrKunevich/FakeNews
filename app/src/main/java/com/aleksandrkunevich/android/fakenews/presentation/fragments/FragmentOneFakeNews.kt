@@ -8,7 +8,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleksandrkunevich.android.fakenews.R
+import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import com.aleksandrkunevich.android.fakenews.presentation.DataIdSortingViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.FakeNewsViewModel
 import com.aleksandrkunevich.android.fakenews.presentation.recycler.FakeNewsAdapter
@@ -23,7 +25,7 @@ class FragmentOneFakeNews : Fragment() {
         fun newInstance() = FragmentOneFakeNews()
     }
 
-    private val adapter by lazy { FakeNewsAdapter() }
+    private val adapterFakeNews by lazy { FakeNewsAdapter() }
     private val dataModelIdSorting: DataIdSortingViewModel by activityViewModels()
     private val fakeNewsViewModel by viewModel<FakeNewsViewModel>()
 
@@ -36,7 +38,7 @@ class FragmentOneFakeNews : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewFakeNews.adapter = adapter
+        recyclerViewFakeNews.adapter = adapterFakeNews
 
         getOrInsertAndGetFakeNewsFromDataBase()
         val button: Button = view.findViewById(R.id.buttonSorting)
@@ -45,7 +47,7 @@ class FragmentOneFakeNews : Fragment() {
         }
         dataModelIdSorting.getIdSortingAlgorithm()
             .observe(viewLifecycleOwner) { idSortingAlgorithm ->
-                adapter.reloadSortedRecycler(idSortingAlgorithm)
+                adapterFakeNews.reloadSortedRecycler(idSortingAlgorithm)
             }
     }
 
@@ -62,19 +64,19 @@ class FragmentOneFakeNews : Fragment() {
 //    private fun initRecycler(newfakeNews: List<FakeNews>) {
 //        recyclerViewFakeNews.apply {
 //            layoutManager = LinearLayoutManager(activity)
-//            adapter.submitList(newfakeNews)
+//            adapter = adapterFakeNews
 //        }
 //    }
 
     private fun getOrInsertAndGetFakeNewsFromDataBase() {
         fakeNewsViewModel.loadFakeNews()
-        fakeNewsViewModel.fakeNews.observe(viewLifecycleOwner) { newFakeNews ->
+        fakeNewsViewModel.fakeNews.observe(this) { newFakeNews ->
             if (newFakeNews.isEmpty()) {
                 fakeNewsViewModel.insertFakeNews()
                 fakeNewsViewModel.loadFakeNews()
-                adapter.submitList(newFakeNews)
+                adapterFakeNews.submitList(newFakeNews)
             } else {
-                adapter.submitList(newFakeNews)
+                adapterFakeNews.submitList(newFakeNews)
             }
         }
     }

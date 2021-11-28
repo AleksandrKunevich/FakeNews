@@ -2,6 +2,7 @@ package com.aleksandrkunevich.android.fakenews.presentation.recycler
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aleksandrkunevich.android.fakenews.R
@@ -26,6 +27,7 @@ class FakeNewsAdapter : RecyclerView.Adapter<FakeNewsHolder>() {
         return itemsFakeNews.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(data: List<FakeNews>) {
         itemsFakeNews = data
         notifyDataSetChanged()
