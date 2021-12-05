@@ -49,10 +49,6 @@ class FragmentOneFakeNews : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerViewFakeNews.adapter = adapterFakeNews
         getOrInsertAndGetFakeNewsFromDataBase()
-
-        binding.buttonSorting.setOnClickListener {
-            openChooseSortingFragment()
-        }
     }
 
     private fun openChooseSortingFragment() {
@@ -77,6 +73,9 @@ class FragmentOneFakeNews : Fragment() {
             } else {
                 items = newFakeNews
                 adapterFakeNews.submitList(newFakeNews)
+            }
+            binding.buttonSorting.setOnClickListener {
+                openChooseSortingFragment()
             }
         }
     }

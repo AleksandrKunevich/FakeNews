@@ -13,9 +13,31 @@ class FakeNewsViewModel(private val fakeNewsInteractor: FakeNewsInteractor) : Vi
     val fakeNews: LiveData<List<FakeNews>> get() = _fakeNews
     private val _fakeNews = MutableLiveData<List<FakeNews>>()
 
+    val sortedFakeNews: LiveData<List<FakeNews>> get() = _sortedFakeNews
+    private var _sortedFakeNews = MutableLiveData<List<FakeNews>>()
+
     fun loadFakeNews() {
         viewModelScope.launch {
             _fakeNews.value = fakeNewsInteractor.getFakeNews()
+
+        }
+    }
+
+    fun sorted(idSorted: String) {
+        viewModelScope.launch {
+            _sortedFakeNews.value = fakeNewsInteractor.getFakeNews()
+
+        }
+        when (idSorted) {
+            "Author" -> _sortedFakeNews.value?.sortedBy {
+                it.author
+            }
+            "Date" -> _sortedFakeNews.value?.sortedBy {
+                it.date
+            }
+            "Title" -> _sortedFakeNews.value?.sortedBy {
+                it.title
+            }
         }
     }
 
