@@ -16,8 +16,4 @@ class DataIdSortingViewModel() : ViewModel() {
             _selected.value = item
         }
     }
-
-    fun getIdSortingAlgorithm(): LiveData<Int> {
-        return selected
-    }
 }

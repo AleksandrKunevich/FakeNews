@@ -27,7 +27,6 @@ class FragmentOneFakeNews : Fragment() {
         fun newInstance() = FragmentOneFakeNews()
     }
 
-    private val dataModelIdSorting: DataIdSortingViewModel by activityViewModels()
     private lateinit var binding: FragmentOneNewsBinding
     private lateinit var binding2: FragmentTwoRadioBinding
     private lateinit var bindingActivity: ActivityMainBinding
@@ -54,10 +53,6 @@ class FragmentOneFakeNews : Fragment() {
         binding.buttonSorting.setOnClickListener {
             openChooseSortingFragment()
         }
-
-        dataModelIdSorting.getIdSortingAlgorithm().observe(viewLifecycleOwner) { idSorting ->
-            reloadSortedRecycler(idSorting)
-        }
     }
 
     private fun openChooseSortingFragment() {
@@ -82,32 +77,6 @@ class FragmentOneFakeNews : Fragment() {
             } else {
                 items = newFakeNews
                 adapterFakeNews.submitList(newFakeNews)
-            }
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun reloadSortedRecycler(sortedId: Int) {
-        recyclerViewFakeNews.layoutManager = LinearLayoutManager(activity)
-        binding2.apply {
-            when (sortedId) {
-                radioButtonAuthor.id -> {
-                    adapterFakeNews.submitList(items.sortedBy {
-                        it.author
-                    })
-                }
-
-                radioButtonDate.id -> {
-                    adapterFakeNews.submitList(items.sortedBy {
-                        it.date
-                    })
-                }
-
-                radioButtonTitle.id -> {
-                    adapterFakeNews.submitList(items.sortedBy {
-                        it.title
-                    })
-                }
             }
         }
     }

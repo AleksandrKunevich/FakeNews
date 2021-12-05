@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import com.aleksandrkunevich.android.fakenews.domain.FakeNews
 import com.aleksandrkunevich.android.fakenews.domain.FakeNewsInteractor
+import kotlinx.coroutines.launch
 
 class FakeNewsViewModel(private val fakeNewsInteractor: FakeNewsInteractor) : ViewModel() {
 
